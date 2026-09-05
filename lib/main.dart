@@ -6,10 +6,12 @@ import 'src/exceptions/game_exceptions.dart';
 import 'src/logic/game_controller.dart';
 import 'src/models/board.dart';
 
+/// Starts the Four Connects Flutter application.
 void main() {
   runApp(const MainApp());
 }
 
+/// Root widget for the Four Connects application.
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
@@ -29,6 +31,7 @@ class MainApp extends StatelessWidget {
   }
 }
 
+/// Displays one board position as a colored playing piece.
 class Tile extends StatelessWidget {
   const Tile(this.player, {super.key, this.size = 60});
   final Player player;
@@ -40,15 +43,11 @@ class Tile extends StatelessWidget {
       width: size,
       height: size,
       alignment: Alignment.center,
-      decoration: BoxDecoration(
-        //border: Border.all(color: Colors.grey.shade300),
-        color: Colors.blue,
-      ),
       child: Container(
         width: size - 5,
         height: size - 5,
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade300),
+          //border: Border.all(color: Colors.grey.shade300),
           borderRadius: BorderRadius.circular(size / 2),
           color: switch (player) {
             Player.red => Colors.red,
@@ -61,6 +60,7 @@ class Tile extends StatelessWidget {
   }
 }
 
+/// Displays the board and handles user moves.
 class GamePage extends StatefulWidget {
   const GamePage({super.key});
 
@@ -104,13 +104,24 @@ class _GamePageState extends State<GamePage> {
                       ),
                   ],
                 ),
-                for (final row in _gameController.board.grid)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      for (final player in row) Tile(player, size: tileSize),
-                    ],
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(10),
                   ),
+                  child:
+                    Column(
+                    children : [
+                      for (final row in _gameController.board.grid)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            for (final player in row) Tile(player, size: tileSize),
+                          ],
+                        ),
+                      ],
+                    )
+                ),
               ],
             ),
           );
@@ -143,6 +154,7 @@ class _GamePageState extends State<GamePage> {
   }
 }
 
+/// Displays a column control that lets the user drop a coin.
 class DropCoinBox extends StatelessWidget {
   const DropCoinBox({
     super.key,

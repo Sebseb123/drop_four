@@ -1,18 +1,32 @@
 import 'package:vier_gewinnt/src/models/board.dart';
 
+/// Coordinates turns, moves, wins, and draws for a Connect Four game.
 class GameController {
+  /// Creates a controller using [board], or a new empty board by default.
   GameController({Gameboard? board}) : board = board ?? Gameboard();
 
+  /// The board used by this game.
   final Gameboard board;
   Player _currentPlayer = Player.red;
   Player _winner = Player.none;
   bool _isDraw = false;
 
+  /// The player whose turn it currently is.
   Player get currentPlayer => _currentPlayer;
+
+  /// The winning player, or [Player.none] while there is no winner.
   Player get winner => _winner;
+
+  /// Whether the game ended without a winner because the board is full.
   bool get isDraw => _isDraw;
+
+  /// Whether no further moves can be made.
   bool get isGameOver => winner != Player.none || isDraw;
 
+  /// Places a coin for the current player and advances the game state.
+  ///
+  /// Moves are ignored after the game has ended. Board validation errors are
+  /// passed through from [Gameboard.dropCoin].
   void dropCoin(int column) {
     if (isGameOver) return;
 
@@ -30,7 +44,7 @@ class GameController {
     _currentPlayer = currentPlayer.getOpposite();
   }
 
-  // Checks if a specific player has 4 consecutive pieces on the board.
+  /// Whether [player] has four consecutive pieces in any direction.
   bool checkWinCondition(Player player) {
     if (player == Player.none) return false;
 

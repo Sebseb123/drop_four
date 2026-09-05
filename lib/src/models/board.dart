@@ -1,10 +1,12 @@
 import '../exceptions/game_exceptions.dart';
 
+/// Represents a player or an empty board position.
 enum Player {
   red,
   yellow,
   none;
 
+  /// Returns the other player, or [Player.none] for an empty position.
   Player getOpposite() {
     if (this == Player.none) {
       return Player.none;
@@ -13,11 +15,13 @@ enum Player {
   }
 }
 
+/// Stores the 6-by-7 playing field and applies Connect Four placement rules.
 class Gameboard {
   late final List<List<Player>> _grid;
   final int rows = 6;
   final int cols = 7;
 
+  /// Creates an empty game board.
   Gameboard() {
     _grid = List.generate(
       rows,
@@ -25,7 +29,10 @@ class Gameboard {
     );
   }
 
-  //Named Constructor to create Gameboard from griven grid
+  /// Creates a board from an existing 6-by-7 grid.
+  ///
+  /// The supplied grid is copied so later changes to it do not modify this
+  /// board. Throws [ArgumentError] when the dimensions are invalid.
   Gameboard.fromGrid(List<List<Player>> grid) {
     if (grid.length != rows || grid.any((row) => row.length != cols)) {
       throw ArgumentError('Grid must have $rows rows and $cols columns.');
@@ -33,13 +40,20 @@ class Gameboard {
     _grid = grid.map(List<Player>.from).toList(growable: false);
   }
 
+  /// Returns an unmodifiable view of the current board.
   List<List<Player>> get grid => List<List<Player>>.unmodifiable(
     _grid.map((row) => List<Player>.unmodifiable(row)),
   );
 
+  /// Whether every position on the board contains a coin.
   bool get isFull =>
       _grid.every((row) => row.every((tile) => tile != Player.none));
 
+  /// Drops a coin into the selected column.
+  ///
+  /// Columns are numbered from 1 to [cols]. Throws [InvalidColumnException]
+  /// for an invalid column, [ColumnFullException] for a full column, and
+  /// [ArgumentError] when [player] is empty.
   void dropCoin(int colIndex, Player player) {
     if (colIndex < 1 || colIndex > cols) {
       throw InvalidColumnException(colIndex);
