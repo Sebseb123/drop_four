@@ -3,11 +3,11 @@ import 'package:vier_gewinnt/src/models/board.dart';
 /// Coordinates turns, moves, wins, and draws for a Connect Four game.
 class GameController {
   /// Creates a controller using [board], or a new empty board by default.
-  GameController({Gameboard? board}) : board = board ?? Gameboard();
+  GameController(this._currentPlayer, {Gameboard? board}) : board = board ?? Gameboard();
 
   /// The board used by this game.
   final Gameboard board;
-  Player _currentPlayer = Player.red;
+  Player _currentPlayer;
   Player _winner = Player.none;
   bool _isDraw = false;
 
@@ -101,5 +101,13 @@ class GameController {
     }
 
     return false;
+  }
+
+  GameController playAgain() {
+    if (_winner != Player.none) {
+      return GameController(_winner.getOpposite());
+   } else {
+    return GameController(_currentPlayer);
+   }
   }
 }

@@ -1,6 +1,6 @@
 # Vier Connects
 
-A small Flutter implementation of the classic Connect Four game. Two players
+A small Flutter implementation of the classic Four Wins game. Two players
 take turns dropping red and yellow coins into a 7-column, 6-row board. The
 first player to connect four coins horizontally, vertically, or diagonally
 wins.
